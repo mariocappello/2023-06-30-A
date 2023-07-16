@@ -2,7 +2,7 @@ package it.polito.tdp.exam.model;
 
 import java.util.Objects;
 
-public class Team {
+public class Team implements Comparable<Team>{
 
     private Integer iD;
     private Integer year;
@@ -249,7 +249,15 @@ public class Team {
 
 	@Override
 	public String toString() {
-		return teamCode;
+		return teamCode+"-"+this.name;
+	}
+
+
+
+	@Override
+	public int compareTo(Team o) {
+		// TODO Auto-generated method stub
+		return this.name.compareTo(o.getName());
 	}
     
     

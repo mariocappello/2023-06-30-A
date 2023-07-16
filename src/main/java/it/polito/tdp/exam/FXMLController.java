@@ -5,9 +5,16 @@
 package it.polito.tdp.exam;
 
 import java.net.URL;
+import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
+import org.jgrapht.graph.DefaultWeightedEdge;
+
+import it.polito.tdp.exam.model.Adiacenza;
 import it.polito.tdp.exam.model.Model;
+import it.polito.tdp.exam.model.Team;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -35,10 +42,10 @@ public class FXMLController {
     private Button btnSimula; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbAnno"
-    private ComboBox<?> cmbAnno; // Value injected by FXMLLoader
+    private ComboBox<Integer> cmbAnno; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbSquadra"
-    private ComboBox<?> cmbSquadra; // Value injected by FXMLLoader
+    private ComboBox<Team> cmbSquadra; // Value injected by FXMLLoader
 
     @FXML // fx:id="txtResult"
     private TextArea txtResult; // Value injected by FXMLLoader
@@ -48,12 +55,33 @@ public class FXMLController {
 
     @FXML
     void handleCreaGrafo(ActionEvent event) {
+    	txtResult.clear();
+    	cmbAnno.getItems().clear();
+    	
+    	Team team = cmbSquadra.getValue();
+    	model.creaGrafo(team);
+    	txtResult.appendText("Numero Vertici: "+model.getNumeroVertici());
+    	txtResult.appendText("Numero Archi: "+model.getNumeroArchi());
+    	
+    	
+    	cmbAnno.getItems().addAll(model.getVertici(team));
 
     }
 
     @FXML
     void handleDettagli(ActionEvent event) {
-
+    	
+    	Integer annoVerifica = cmbAnno.getValue();
+    	if(annoVerifica==null) {
+    		txtResult.setText("selezionare un valore!");
+    		return;
+    	}
+    	int anno = cmbAnno.getValue();
+    	List<Adiacenza> adiacenti = model.calcolaAdiacenti(anno);
+    	for(Adiacenza a : adiacenti) {
+    		txtResult.appendText("Anni adiacenti a "+anno+": "+a.getSource()+" "+a.getTarget()+" "+a.getPeso()+"\n");
+    	}
+    	
     }
 
     @FXML
@@ -75,6 +103,9 @@ public class FXMLController {
 
     public void setModel(Model model) {
         this.model = model;
+        Collections.sort(model.readAllTeams());
+        cmbSquadra.getItems().addAll(model.readAllTeams());
+        
     }
 
 }

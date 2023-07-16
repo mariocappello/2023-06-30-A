@@ -8,11 +8,11 @@ public class TestBaseballDAO {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		BaseballDAO dao = new BaseballDAO();
+		//BaseballDAO dao = new BaseballDAO();
 
-		List<People> players = dao.readAllPlayers();
+		//List<People> players = dao.readAllPlayers();
 		
-		System.out.println(players.size());
+		//System.out.println(players.size());
 	}
 
 }
